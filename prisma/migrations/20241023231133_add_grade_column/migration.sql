@@ -1,0 +1,2 @@
+-- CreateEnum
+CREATE TYPE "GradeEnum" AS ENUM ('FRESHMAN', 'SOPHOMORE', 'JUNIOR', 'SENIOR');

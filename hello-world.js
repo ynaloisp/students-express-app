@@ -8,7 +8,7 @@ app.use(cors());
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 
-app.get("/hello", (req, res) => {
+app.get("/", (req, res) => {
   res.json({ message: "Hello World!" });
 });
 

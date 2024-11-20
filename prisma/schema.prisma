@@ -22,6 +22,12 @@ model Student {
   school String
 }
 
+model User {
+  userId String @id @default(uuid())
+  authId String @unique
+  email String @unique
+}
+
 enum GradeEnum {
   FRESHMAN
   SOPHOMORE

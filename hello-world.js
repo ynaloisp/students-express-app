@@ -1,5 +1,6 @@
 const express = require("express");
 const { PrismaClient } = require("@prisma/client");
+const { clerkClient } = require("./lib/clerk");
 const prisma = new PrismaClient();
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -54,6 +55,23 @@ app.get("/students/:id", async (req, res) => {
     res.status(404).json({ message: "Student not found" });
   }
 }); //colon means its a url param
+
+app.post("/register", async (req, res) => {
+  const { emailAddress, password } = req.body;
+  const user = await clerkClient.users.createUser({
+    emailAddress: [emailAddress],
+    password,
+  });
+  await prisma.user.create({
+    data: { authId: user.id, email: emailAddress.toLowerCase() },
+  });
+
+  const signInToken = await clerkClient.signInTokens.createSignInToken({
+    userId: user.id,
+  });
+  res.cookie("accessToken", signInToken.token);
+  res.json(signInToken);
+});
 
 app.post("/students", async (req, res) => {
   console.log(req.body);
